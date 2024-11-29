@@ -13,6 +13,11 @@ Dual = Symbol("I am both a knight and a knave.")
 TwoKnaves = Symbol("We are both knaves.")
 SameKind = Symbol("We are the same kind.")
 DiffKind = Symbol("We are different kinds.")
+KnaveOrKnight = Symbol("'I am a knight.' or 'I am a knave., but you don't know which.'")
+BspeaksForA = Symbol("A said 'I am a knave'.")
+BspeaksForC = Symbol("C is a knave.")
+CspeaksForA = Symbol("A is a knight.")
+
 
 # Puzzle 0
 # A says "I am both a knight and a knave."
@@ -47,11 +52,26 @@ knowledge2 = And(
 # B says "A said 'I am a knave'."
 # B says "C is a knave."
 # C says "A is a knight."
+
 knowledge3 = And(
-    # TODO
+
+    Implication(KnaveOrKnight, Or(AKnight, And(Not(AKnave), Not(AKnight)))),
+    Implication(BspeaksForA,   Or(AKnight, And(Not(AKnave), Not(AKnight)))),
+    Implication(BspeaksForC, Or(CKnave, CKnight)),
+    Implication(CspeaksForA, Or(AKnave, AKnight)),
+                
+    Implication(AKnight, AKnight),
+    Implication(AKnave,  And(Not(AKnave), Not(AKnight))),
+    Implication(BKnight, And(Not(AKnave), Not(AKnight))),
+    Implication(BKnave, AKnight),
+    Implication(BKnight, CKnave),
+    Implication(BKnave, CKnight),
+    Implication(CKnight, AKnight),
+    Implication(CKnave, AKnave),
+
+    KnaveOrKnight, BspeaksForA, BspeaksForC, CspeaksForA
+
 )
-
-
 def main():
     '''
     print(model_check(knowledge0, AKnight))
@@ -63,7 +83,7 @@ def main():
         ("Puzzle 0", knowledge0),
         ("Puzzle 1", knowledge1),
         ("Puzzle 2", knowledge2),
-        #("Puzzle 3", knowledge3)
+        ("Puzzle 3", knowledge3)
     ]
     for puzzle, knowledge in puzzles:
         print(puzzle)
