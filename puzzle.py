@@ -62,12 +62,11 @@ knowledge3 = And(
                 
     Implication(AKnight, AKnight),
     Implication(AKnave,  And(Not(AKnave), Not(AKnight))),
-    Implication(BKnight, And(Not(AKnave), Not(AKnight))),
-    Implication(BKnave, AKnight),
-    Implication(BKnight, CKnave),
-    Implication(BKnave, CKnight),
+    Implication(BKnight, And(CKnave, And(Not(AKnave), Not(AKnight)))),
+    Implication(BKnave, And(CKnight, AKnight)),
     Implication(CKnight, AKnight),
     Implication(CKnave, AKnave),
+    Implication(CKnight, BKnave),
 
     KnaveOrKnight, BspeaksForA, BspeaksForC, CspeaksForA
 
